@@ -15,7 +15,7 @@ clean:
 	@rm -rf $(TMP_DIR)
 
 clean_sources:
-	@rm -rf src composer.json composer.lock
+	@rm -rf src composer.lock
 
 update_sources: update clean_sources
 	@echo "Refreshing src folder"
@@ -23,10 +23,12 @@ update_sources: update clean_sources
 
 composer_%: update_sources
 	@echo "Generating composer.json for PHP $(*)"
-	@export REQUIREMENTS='$(shell cat $(RANDOMIZED_TESTS_DIR)/composer-$(*).json | jq '.require')'; \
-		cat composer.json | \
+	@export REQUIREMENTS='$(shell cat $(RANDOMIZED_TESTS_DIR)/composer-$(*).json | jq '.require')' \
+		&& cat composer.json | \
 			sed 's@{}@'"$$REQUIREMENTS"'@' | \
-			jq > composer.json
+			jq . > composer.tmp.json \
+		&& mv composer.tmp.json composer.json \
+		&& rm -f composer.tmp.json
 
 release_%: composer_%
 	@echo "Tagging $(*).$(RELEASE_DATE_FRAGMENT)"

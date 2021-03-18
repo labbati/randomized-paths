@@ -2,7 +2,11 @@
   "name": "labbati/randomized-paths",
   "type": "library",
   "description": "A library making available to any project randomized paths generated from DataDog/dd-trace-php/tests/randomized",
-  "keywords": ["php", "randomized", "testing"],
+  "keywords": [
+    "php",
+    "randomized",
+    "testing"
+  ],
   "license": "BSD-3-Clause",
   "authors": [
     {

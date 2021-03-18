@@ -1,7 +1,7 @@
 {
   "name": "labbati/randomized-paths",
   "type": "library",
-  "description": "This package provides to any project randomized paths generated from DataDog/dd-trace-php/tests/randomized",
+  "description": "Random paths generator from DataDog/dd-trace-php/tests/randomized",
   "keywords": [
     "php",
     "randomized",

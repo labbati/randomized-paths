@@ -40,4 +40,4 @@ release_%: composer_%
 	@git push origin 'v$(*).$(RELEASE_DATE_FRAGMENT)'
 	@git checkout main
 
-release: release_8.0 release_7.4 release_7.3 release_7.2 release_7.1 release_7.0 release_5.6 release_5.5, release_5.4
+release: release_8.0 release_7.4 release_7.3 release_7.2 release_7.1 release_7.0 release_5.6 release_5.5 release_5.4

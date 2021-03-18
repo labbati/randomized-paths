@@ -36,3 +36,5 @@ release_%: composer_%
 	@git push -u origin release/$(*)/$(RELEASE_DATE_FRAGMENT)
 	@git push tag 'v$(*).$(RELEASE_DATE_FRAGMENT)'
 	@git checkout master
+
+release: release_8.0 release_7.4 release_7.3 release_7.2 release_7.1 release_7.0 release_5.6 release_5.5, release_5.4

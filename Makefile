@@ -31,7 +31,7 @@ composer_%: update_sources
 release_%: composer_%
 	@echo "Tagging $(*).$(RELEASE_DATE_FRAGMENT)"
 	@git checkout -b 'release/$(*)/$(RELEASE_DATE_FRAGMENT)'
-	@git commit -a 'bump version $(*).$(RELEASE_DATE_FRAGMENT)'
+	@git commit -a -m 'bump version $(*).$(RELEASE_DATE_FRAGMENT)'
 	@git tag 'v$(*).$(RELEASE_DATE_FRAGMENT)'
 	@git push -u origin release/$(*)/$(RELEASE_DATE_FRAGMENT)
 	@git push tag 'v$(*).$(RELEASE_DATE_FRAGMENT)'

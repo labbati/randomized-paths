@@ -1,0 +1,19 @@
+{
+  "name": "labbati/randomized-paths",
+  "type": "library",
+  "description": "A library making available to any project randomized paths generated from DataDog/dd-trace-php/tests/randomized",
+  "keywords": ["php", "randomized", "testing"],
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "Luca Abbati",
+      "email": "luca.abbati@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "RandomizedTests\\": "./src/RandomizedTests"
+    }
+  },
+  "require": "automatically_substituted_here_at_build_time"
+}

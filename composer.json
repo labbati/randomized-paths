@@ -15,5 +15,5 @@
       "RandomizedTests\\": "./src/RandomizedTests"
     }
   },
-  "require": "automatically_substituted_here_at_build_time"
+  "require": {}
 }

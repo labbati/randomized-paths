@@ -24,8 +24,8 @@ update_sources: update clean_sources
 composer_%: update_sources
 	@echo "Generating composer.json for PHP $(*)"
 	@export REQUIREMENTS='$(shell cat $(RANDOMIZED_TESTS_DIR)/composer-$(*).json | jq '.require')'; \
-		cat composer.template.json | \
-			sed 's@"automatically_substituted_here_at_build_time"@'"$$REQUIREMENTS"'@' | \
+		cat composer.json | \
+			sed 's@{}@'"$$REQUIREMENTS"'@' | \
 			jq > composer.json
 
 release_%: composer_%
@@ -36,7 +36,6 @@ release_%: composer_%
 	@git tag 'v$(*).$(RELEASE_DATE_FRAGMENT)'
 	@git push -u origin release/$(*)/$(RELEASE_DATE_FRAGMENT)
 	@git push origin 'v$(*).$(RELEASE_DATE_FRAGMENT)'
-	@rm composer.json
 	@git checkout main
 
 release: release_8.0 release_7.4 release_7.3 release_7.2 release_7.1 release_7.0 release_5.6 release_5.5, release_5.4

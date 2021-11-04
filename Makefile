@@ -1,33 +1,28 @@
 TMP_DIR := .tmp
-RANDOMIZED_TESTS_DIR := $(TMP_DIR)/tests/randomized/app
+TMP_DDTRACE := $(TMP_DIR)/dd-trace-php
+TMP_RELEASE := $(TMP_DIR)/release
+RANDOMIZED_TESTS_DIR := $(TMP_DDTRACE)/tests/randomized/app
 RANDOMIZED_TESTS_SRC_DIR := $(RANDOMIZED_TESTS_DIR)/src
 
-$(TMP_DIR):
+$(TMP_DDTRACE):
 	@mkdir -p .tmp
-	@git clone --single-branch --branch master git@github.com:DataDog/dd-trace-php.git $(TMP_DIR)
+	@git clone --single-branch --branch master git@github.com:DataDog/dd-trace-php.git $(TMP_DDTRACE)
 
-update: $(TMP_DIR)
-	@echo "Updating to latest master"
-	@git -C $(TMP_DIR) pull
+$(TMP_RELEASE):
+	@mkdir -p .tmp
+	@git clone --single-branch --branch main git@github.com:labbati/randomized-paths.git $(TMP_RELEASE)
+
+$(TMP_DIR): $(TMP_DDTRACE) $(TMP_RELEASE)
 
 clean:
 	@rm -rf $(TMP_DIR)
 
-clean_sources:
-	@rm -rf src composer.lock
-
-update_sources: update clean_sources
-	@echo "Refreshing src folder"
-	@cp -r $(RANDOMIZED_TESTS_SRC_DIR) .
-
-composer_%: update_sources
+composer_%: $(TMP_DIR)
 	@echo "Generating composer.json for PHP $(*)"
 	@export REQUIREMENTS='$(shell cat $(RANDOMIZED_TESTS_DIR)/composer-$(*).json | jq '.require')' \
 		&& cat composer.json | \
 			sed 's@{}@'"$$REQUIREMENTS"'@' | \
-			jq . > composer.tmp.json \
-		&& mv composer.tmp.json composer.json \
-		&& rm -f composer.tmp.json
+			jq . > $(TMP_RELEASE)/composer.json
 
 release_%: composer_%
 	@if [ -z "$(VERSION)" ]; then \
@@ -35,13 +30,11 @@ release_%: composer_%
 		exit 1; \
 	fi
 	@echo "Tagging $(*).$(VERSION)"
-	@git -C $(TMP_DIR) checkout master
-	@git -C $(TMP_DIR) checkout -b 'release/$(*)/$(VERSION)'
-	@git -C $(TMP_DIR) add --all
-	@git -C $(TMP_DIR) commit -m 'bump version $(*).$(VERSION)'
-	@git -C $(TMP_DIR) tag 'v$(*).$(VERSION)'
-	@git -C $(TMP_DIR) push -u origin release/$(*)/$(VERSION)
-	@git -C $(TMP_DIR) push origin 'v$(*).$(VERSION)'
-	@git -C $(TMP_DIR) checkout main
+	@git -C $(TMP_RELEASE) checkout -b 'release/$(*)/$(VERSION)'
+	@git -C $(TMP_RELEASE) add --all
+	@git -C $(TMP_RELEASE) commit -m 'bump version $(*).$(VERSION)'
+	@git -C $(TMP_RELEASE) tag 'v$(*).$(VERSION)'
+	@git -C $(TMP_RELEASE) push origin 'v$(*).$(VERSION)'
+	@git -C $(TMP_RELEASE) checkout main
 
 release: clean release_8.0 release_7.4 release_7.3 release_7.2 release_7.1 release_7.0 release_5.6 release_5.5 release_5.4

@@ -1,7 +1,6 @@
 TMP_DIR := .tmp
 RANDOMIZED_TESTS_DIR := $(TMP_DIR)/tests/randomized/app
 RANDOMIZED_TESTS_SRC_DIR := $(RANDOMIZED_TESTS_DIR)/src
-RELEASE_DATE_FRAGMENT := $(shell date -u '+%y%m%d%H%M%S')
 
 $(TMP_DIR):
 	@mkdir -p .tmp
@@ -31,13 +30,16 @@ composer_%: update_sources
 		&& rm -f composer.tmp.json
 
 release_%: composer_%
-	@echo "Tagging $(*).$(RELEASE_DATE_FRAGMENT)"
-	@git checkout -b 'release/$(*)/$(RELEASE_DATE_FRAGMENT)'
+ifndef VERSION
+$(error 'VERSION is not set. Invoke with VERSION=x.y')
+endif
+	@echo "Tagging $(*).$(VERSION)"
+	@git checkout -b 'release/$(*)/$(VERSION)'
 	@git add --all
-	@git commit -m 'bump version $(*).$(RELEASE_DATE_FRAGMENT)'
-	@git tag 'v$(*).$(RELEASE_DATE_FRAGMENT)'
-	@git push -u origin release/$(*)/$(RELEASE_DATE_FRAGMENT)
-	@git push origin 'v$(*).$(RELEASE_DATE_FRAGMENT)'
+	@git commit -m 'bump version $(*).$(VERSION)'
+	@git tag 'v$(*).$(VERSION)'
+	@git push -u origin release/$(*)/$(VERSION)
+	@git push origin 'v$(*).$(VERSION)'
 	@git checkout main
 
 release: release_8.0 release_7.4 release_7.3 release_7.2 release_7.1 release_7.0 release_5.6 release_5.5 release_5.4

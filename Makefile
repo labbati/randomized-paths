@@ -17,6 +17,17 @@ $(TMP_DIR): $(TMP_DDTRACE) $(TMP_RELEASE)
 clean:
 	@rm -rf $(TMP_DIR)
 
+update_src: $(TMP_DDTRACE)
+	@if [ -z "$(VERSION)" ]; then \
+		echo "Error: Empty VERSION. Set to VERSION=x.y"; \
+		exit 1; \
+	fi
+	rm -rf src
+	cp -r $(RANDOMIZED_TESTS_SRC_DIR) .
+	git add --all
+	git commit -m 'Release $(VERSION)'
+	git push
+
 composer_%: $(TMP_DIR)
 	@echo "Generating composer.json for PHP $(*)"
 	@export REQUIREMENTS='$(shell cat $(RANDOMIZED_TESTS_DIR)/composer-$(*).json | jq '.require')' \
@@ -37,4 +48,4 @@ release_%: composer_%
 	@git -C $(TMP_RELEASE) push origin 'v$(*).$(VERSION)'
 	@git -C $(TMP_RELEASE) checkout main
 
-release: clean release_8.0 release_7.4 release_7.3 release_7.2 release_7.1 release_7.0 release_5.6 release_5.5 release_5.4
+release: clean update_src release_8.0 release_7.4 release_7.3 release_7.2 release_7.1 release_7.0 release_5.6 release_5.5 release_5.4

@@ -6,7 +6,7 @@ RANDOMIZED_TESTS_SRC_DIR := $(RANDOMIZED_TESTS_DIR)/src
 
 $(TMP_DDTRACE):
 	@mkdir -p .tmp
-	@git clone --single-branch --branch master git@github.com:DataDog/dd-trace-php.git $(TMP_DDTRACE)
+	@git clone --single-branch --branch labbati/randomized-long-running git@github.com:DataDog/dd-trace-php.git $(TMP_DDTRACE)
 
 $(TMP_RELEASE):
 	@mkdir -p .tmp

@@ -34,12 +34,12 @@ ifndef VERSION
 $(error 'VERSION is not set. Invoke with VERSION=x.y')
 endif
 	@echo "Tagging $(*).$(VERSION)"
-	@git checkout -b 'release/$(*)/$(VERSION)'
-	@git add --all
-	@git commit -m 'bump version $(*).$(VERSION)'
-	@git tag 'v$(*).$(VERSION)'
-	@git push -u origin release/$(*)/$(VERSION)
-	@git push origin 'v$(*).$(VERSION)'
-	@git checkout main
+	@git -C $(TMP_DIR) checkout master
+	@git -C $(TMP_DIR) checkout -b 'release/$(*)/$(VERSION)'
+	@git -C $(TMP_DIR) add --all
+	@git -C $(TMP_DIR) commit -m 'bump version $(*).$(VERSION)'
+	@git -C $(TMP_DIR) tag 'v$(*).$(VERSION)'
+	@git -C $(TMP_DIR) push -u origin release/$(*)/$(VERSION)
+	@git -C $(TMP_DIR) push origin 'v$(*).$(VERSION)'
 
 release: release_8.0 release_7.4 release_7.3 release_7.2 release_7.1 release_7.0 release_5.6 release_5.5 release_5.4

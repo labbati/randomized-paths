@@ -25,7 +25,7 @@ update_src: $(TMP_DDTRACE)
 	rm -rf src
 	cp -r $(RANDOMIZED_TESTS_SRC_DIR) .
 	git add --all
-	git commit -m 'Release $(VERSION)'
+	git commit --allow-empty -m 'Release $(VERSION)'
 	git push
 
 composer_%: $(TMP_DIR)

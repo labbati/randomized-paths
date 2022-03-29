@@ -3,10 +3,11 @@ TMP_DDTRACE := $(TMP_DIR)/dd-trace-php
 TMP_RELEASE := $(TMP_DIR)/release
 RANDOMIZED_TESTS_DIR := $(TMP_DDTRACE)/tests/randomized/app
 RANDOMIZED_TESTS_SRC_DIR := $(RANDOMIZED_TESTS_DIR)/src
+RANDOMIZED_TESTS_BRANCH := master
 
 $(TMP_DDTRACE):
 	@mkdir -p .tmp
-	@git clone --single-branch --branch labbati/randomized-long-running git@github.com:DataDog/dd-trace-php.git $(TMP_DDTRACE)
+	@git clone --single-branch --branch $(RANDOMIZED_TESTS_BRANCH) git@github.com:DataDog/dd-trace-php.git $(TMP_DDTRACE)
 
 $(TMP_RELEASE):
 	@mkdir -p .tmp

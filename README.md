@@ -15,3 +15,36 @@ Depending on the version, add the following to your `composer.json`.
     ...
 }
 ```
+
+You need some companion services to run this tool. You can cherry-pick them from the list below.
+
+```
+// docker-compose.yml
+
+....
+
+  redis:
+    image: redis:latest
+
+  httpbin:
+    image: kennethreitz/httpbin
+
+  memcached:
+    image: "memcached:1.5-alpine"
+
+  elasticsearch:
+    image: "elasticsearch:6.8.13"
+    environment:
+      - discovery.type=single-node
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_USER=test
+      - MYSQL_DATABASE=test
+
+....
+
+```

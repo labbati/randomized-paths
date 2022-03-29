@@ -1,6 +1,7 @@
 TMP_DIR := .tmp
 TMP_DDTRACE := $(TMP_DIR)/dd-trace-php
 TMP_RELEASE := $(TMP_DIR)/release
+DDTRACE_BRANCH := main
 RANDOMIZED_TESTS_DIR := $(TMP_DDTRACE)/tests/randomized/app
 RANDOMIZED_TESTS_SRC_DIR := $(RANDOMIZED_TESTS_DIR)/src
 RANDOMIZED_TESTS_BRANCH := master
@@ -11,7 +12,7 @@ $(TMP_DDTRACE):
 
 $(TMP_RELEASE):
 	@mkdir -p .tmp
-	@git clone --single-branch --branch main git@github.com:labbati/randomized-paths.git $(TMP_RELEASE)
+	@git clone --single-branch --branch $(DDTRACE_BRANCH) git@github.com:labbati/randomized-paths.git $(TMP_RELEASE)
 
 $(TMP_DIR): $(TMP_DDTRACE) $(TMP_RELEASE)
 

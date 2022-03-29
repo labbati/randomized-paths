@@ -48,3 +48,29 @@ You need some companion services to run this tool. You can cherry-pick them from
 ....
 
 ```
+
+Use them (adjust host names)
+
+```
+
+use RandomizedTests\RandomExecutionPath;
+use RandomizedTests\RandomExecutionPathConfiguration;
+use RandomizedTests\SnippetsConfiguration;
+
+$snippetsConfiguration = (new SnippetsConfiguration())
+    ->withHttpBinHost('httpbin')
+    ->withElasticSearchHost('elasticsearch')
+    ->withMysqlHost('mysql')
+    ->withMysqlUser('test')
+    ->withMysqlPassword('test')
+    ->withMysqlDb('test')
+    ->withRedisHost('redis')
+    ->withMemcachedHost('memcached');
+$randomizerConfiguration = new RandomExecutionPathConfiguration(
+    $snippetsConfiguration,
+    isset($queries['seed']) ? intval($queries['seed']) : null,
+    true, // true for web, false for CLI
+    isset($queries['execution_path'])
+);
+
+```

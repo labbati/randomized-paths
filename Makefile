@@ -49,4 +49,15 @@ release_%: composer_%
 	@git -C $(TMP_RELEASE) push origin 'v$(*).$(VERSION)'
 	@git -C $(TMP_RELEASE) checkout main
 
-release: clean update_src release_8.0 release_7.4 release_7.3 release_7.2 release_7.1 release_7.0 release_5.6 release_5.5 release_5.4
+release: clean \
+			update_src \
+			release_8.1 \
+			release_8.0 \
+			release_7.4 \
+			release_7.3 \
+			release_7.2 \
+			release_7.1 \
+			release_7.0 \
+			release_5.6 \
+			release_5.5 \
+			release_5.4
